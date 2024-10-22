@@ -1,0 +1,187 @@
+(IF 문 1-1)
+
+#include <stdio.h>
+
+int main() {
+    int num;
+
+    // 정수 입력 받기
+    printf("정수를 입력하세요: ");
+    scanf_s("%d", &num);
+
+    // 짝수인지 홀수인지 판별
+    if (num % 2 == 0) {
+        printf("입력한 수는 짝수입니다.\n");
+    }
+    else {
+        printf("입력한 수는 홀수입니다.\n");
+    }
+
+    return 0;
+}
+
+
+
+(Switch case문 1-2)
+
+#include <stdio.h>
+
+int main() {
+    int num;
+
+    // 정수 입력 받기
+    printf("정수를 입력하세요: ");
+    scanf_s("%d", &num);
+
+    // 짝수/홀수 판별을 switch 문으로 처리
+    switch (num % 2) {
+    case 0:
+        printf("입력한 수는 짝수입니다.\n");
+        break;
+    case 1:
+    case -1:  // 음수일 때도 홀수이므로 처리
+        printf("입력한 수는 홀수입니다.\n");
+        break;
+    }
+
+    return 0;
+}
+
+
+(IF 문 2-1)
+
+#include <stdio.h>
+
+int main() {
+    int num1, num2;
+
+    // 두 개의 정수 입력 받기
+    printf("두 개의 정수를 입력하세요: ");
+    scanf_s("%d %d", &num1, &num2);
+
+    // 배수 관계 판별
+    if (num2 != 0) {  // 두 번째 정수가 0이 아닌지 확인
+        if (num1 % num2 == 0) {
+            printf("첫 번째 정수는 두 번째 정수의 배수입니다.\n");
+        }
+        else {
+            printf("첫 번째 정수는 두 번째 정수의 배수가 아닙니다.\n");
+        }
+    }
+    else {
+        printf("두 번째 정수는 0일 수 없습니다.\n");
+    }
+
+    return 0;
+}
+
+
+(Switch case문 2-2)
+
+#include <stdio.h>
+
+int main() {
+    int num1, num2;
+
+    // 두 개의 정수 입력 받기
+    printf("두 개의 정수를 입력하세요: ");
+    scanf_s("%d %d", &num1, &num2);
+
+    // 두 번째 정수가 0이 아닌지 먼저 확인
+    if (num2 == 0) {
+        printf("두 번째 정수는 0일 수 없습니다.\n");
+    }
+    else {
+        // 배수 관계 판별을 switch 문으로 처리
+        switch (num1 % num2) {
+        case 0:
+            printf("첫 번째 정수는 두 번째 정수의 배수입니다.\n");
+            break;
+        default:
+            printf("첫 번째 정수는 두 번째 정수의 배수가 아닙니다.\n");
+            break;
+        }
+    }
+
+    return 0;
+}
+
+
+(IF 문 3-1)
+
+#include <stdio.h>
+
+int main() {
+    float score;
+
+    // 실수 입력 받기
+    printf("0.0에서 100.0 사이의 점수를 입력하세요: ");
+    scanf_s("%f", &score);
+
+    // 점수를 학점으로 변환
+    if (score < 0.0 || score > 100.0) {
+        // 입력된 값이 범위를 벗어났을 때
+        printf("잘못된 점수입니다. 0.0에서 100.0 사이의 값을 입력하세요.\n");
+    }
+    else if (score >= 90.0) {
+        printf("학점: A\n");
+    }
+    else if (score >= 80.0) {
+        printf("학점: B\n");
+    }
+    else if (score >= 70.0) {
+        printf("학점: C\n");
+    }
+    else if (score >= 60.0) {
+        printf("학점: D\n");
+    }
+    else {
+        printf("학점: F\n");
+    }
+
+    return 0;
+}
+
+
+(Switch case문 3-2)
+#include <stdio.h>
+
+int main() {
+    float score;
+    int grade;
+
+    // 실수 입력 받기
+    printf("0.0에서 100.0 사이의 점수를 입력하세요: ");
+    scanf_s("%f", &score);
+
+    // 유효 범위 확인
+    if (score < 0.0 || score > 100.0) {
+        printf("잘못된 점수입니다. 0.0에서 100.0 사이의 값을 입력하세요.\n");
+        return 0;
+    }
+
+    // 실수를 10으로 나누어 정수 범위로 변환
+    grade = (int)(score / 10);
+
+    // 학점을 switch-case로 판별
+    switch (grade) {
+    case 10:  // 100점인 경우
+    case 9:
+        printf("학점: A\n");
+        break;
+    case 8:
+        printf("학점: B\n");
+        break;
+    case 7:
+        printf("학점: C\n");
+        break;
+    case 6:
+        printf("학점: D\n");
+        break;
+    default:
+        printf("학점: F\n");
+        break;
+    }
+
+    return 0;
+}
