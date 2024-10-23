@@ -1,0 +1,102 @@
+1번 문제 반복문을 활용한 구구단
+
+#include <stdio.h>
+
+int main() {
+	int x;  // 사용자로부터 입력받을 단수
+
+	// 단수 입력 받기
+	printf("출력할 구구단의 단수를 입력하세요 (2~9 사이의 수, 0 입력시 전체 출력): ");
+	scanf_s("%d", &x);
+
+	if (x == 0) {  // 0을 입력하면 2단부터 9단까지 출력
+		for (int i = 2; i <= 9; i++) {
+			printf("\n%d단:\n", i);
+			for (int j = 1; j <= 9; j++) {
+				printf("%d x %d = %d\n", i, j, i * j);
+			}
+		}
+	}
+	else if (x >= 2 && x <= 9) {  // 입력된 단수의 구구단 출력
+		printf("\n%d단:\n", x);
+		for (int j = 1; j <= 9; j++) {
+			printf("%d x %d = %d\n", x, j, x * j);
+		}
+	}
+	else {
+		printf("2에서 9 사이의 숫자를 입력하세요.\n");
+	}
+
+	return 0;
+}
+
+
+
+2번 문제 WHILE문을 사용한 버전
+
+#include <stdio.h>
+
+int main() {
+	int a, b, X, Y, temp_a, temp_b;
+
+	// 두 숫자 입력 받기
+	printf("두 개의 숫자를 입력하세요: ");
+	scanf_s("%d %d", &a, &b);  // 두 숫자를 입력받음
+
+	// X를 계산하기 위해 입력받은 숫자를 다른 변수에 저장
+	temp_a = a;
+	temp_b = b;
+
+	// 최대 공약수 구하기
+	while (temp_b != 0) {
+		int remainder = temp_a % temp_b;  // temp_a를 temp_b로 나눈 나머지를 구함
+		temp_a = temp_b;                  // temp_a는 temp_b로 대체
+		temp_b = remainder;               // temp_b는 나머지로 대체
+	}
+	X = temp_a;  // 최대 공약수는 temp_a에 저장됨
+
+	// 최소 공배수 구하기
+	Y = (a * b) / X;  // 최소 공배수는 두 수의 곱을 최대 공약수로 나누어 구함
+
+	// 결과 출력
+	printf("최대 공약수: %d\n", X);
+	printf("최소 공배수: %d\n", Y);
+
+	return 0;
+}
+
+
+
+2번 문제 DO WHILE문을 사용한 버전
+
+#include <stdio.h>
+
+int main() {
+	int a, b, X, Y, temp_a, temp_b;
+
+	// 두 숫자 입력 받기
+	printf("두 개의 숫자를 입력하세요: ");
+	scanf_s("%d %d", &a, &b);  // 두 숫자를 입력받음
+
+	// X를 계산하기 위해 입력받은 숫자를 다른 변수에 저장
+	temp_a = a;
+	temp_b = b;
+
+	// 최대 공약수 구하기
+	do {
+		int remainder = temp_a % temp_b;  // temp_a를 temp_b로 나눈 나머지를 구함
+		temp_a = temp_b;                  // temp_a는 temp_b로 대체
+		temp_b = remainder;               // temp_b는 나머지로 대체
+	} while (temp_b != 0);  // temp_b가 0이 될 때까지 반복
+	X = temp_a;  // 최대 공약수는 temp_a에 저장됨
+
+	// 최소 공배수 구하기
+	Y = (a * b) / X;  // 최소 공배수는 두 수의 곱을 최대 공약수로 나누어 구함
+
+	// 결과 출력
+	printf("최대 공약수: %d\n", X);
+	printf("최소 공배수(: %d\n", Y);
+
+	return 0;
+}
+
