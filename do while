@@ -1,0 +1,25 @@
+#include <stdio.h>
+int main() {
+	int a, b, X, Y, temp_a, temp_b;
+	// 두 숫자 입력 받기
+	printf("두 개의 숫자를 입력하세요: ");
+	scanf_s("%d %d", &a, &b);  // 두 숫자를 입력받음
+	// X를 계산하기 위해 입력받은 숫자를 다른 변수에 저장
+	temp_a = a;
+	temp_b = b;
+	// 최대 공약수 구하기
+	do {
+		int remainder = temp_a % temp_b;  // temp_a를 temp_b로 나눈 나머지를 구함
+		temp_a = temp_b;                  // temp_a는 temp_b로 대체
+		temp_b = remainder;               // temp_b는 나머지로 대체
+	} while (temp_b != 0);  // temp_b가 0이 될 때까지 반복
+	X = temp_a;  // 최대 공약수는 temp_a에 저장됨
+	// 최소 공배수 구하기
+	Y = (a * b) / X;  // 최소 공배수는 두 수의 곱을 최대 공약수로 나누어 구함
+	// 결과 출력
+	printf("최대 공약수: %d\n", X);
+	printf("최소 공배수(: %d\n", Y);
+	return 0;
+}
+
+@swcho84
