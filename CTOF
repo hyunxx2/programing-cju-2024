@@ -1,0 +1,73 @@
+#include <stdio.h>
+
+// 섭씨를 화씨로 변환 함수
+float CTOF(float cel) {
+	return (cel * 9 / 5) + 32;
+}
+
+int main() {
+	float cel;
+
+	// 사용자로부터 섭씨 온도 받기
+	printf("섭씨 온도를 입력하세요: ");
+	scanf_s("%f", &cel);
+
+	// 변환 및 결과 출력
+	printf("화씨 온도: %.2f\n", CTOF(cel));
+
+	return 0;
+}
+
+
+#include <stdio.h>
+
+// 화씨를 섭씨로 변환 함수
+float FTOC(float cel) {
+	return (cel * 5 / 9) - 32;
+}
+
+int main() {
+	float cel;
+
+	// 사용자로부터 화씨 온도 받기
+	printf("화씨 온도를 입력하세요: ");
+	scanf_s("%f", &cel);
+
+	// 변환 및 결과 출력
+	printf("섭씨 온도: %.2f\n", FTOC(cel));
+
+	return 0;
+}
+
+#include<stdio.h>
+#include<math.h>
+
+#define PI 3.14
+
+// sin 함수 계산
+double calculate_sin(double degree) {
+	return sin(degree * PI / 180.0);
+}
+
+//cos 함수 계산
+double calculate_cos(double degree) {
+	return cos(degree * PI / 180.0);
+}
+int main() {
+	double angle;
+
+	//각도 입력
+	printf("각도를 입력하세요(0~180) :");
+	scanf_s("%lf", &angle);
+
+	// 0부터 입력된 각도까지 sin, cos값 출력
+	if (angle >= 0 && angle <= 180) {
+		for (double i = 0; i <= angle; i += 1.0) {
+			printf("각도: %.1f, sin: %.4f, cos: %4.f\n", i, calculate_sin(i), calculate_cos(i));
+		}
+	}
+	else {
+		printf("0~180도 사이각 입력.\n");
+	}
+	return 0;
+}
