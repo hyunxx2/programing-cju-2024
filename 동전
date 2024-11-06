@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+	int front = 0;   // 앞면 횟수
+	int back = 0;   // 뒷면 횟수
+	int flips = 10000;  // 던질 동전 횟수
+
+	// 랜덤 시드 설정
+	srand(time(NULL));
+
+	// 10,000번 동전 던지기
+	for (int i = 0; i < flips; i++) {
+		int result = rand() % 2;  // 0 또는 1이 나옴
+		if (result == 0) {
+			front++;  // 앞면
+		}
+		else {
+			back++;  // 뒷면
+		}
+	}
+
+	// 앞면과 뒷면의 확률 계산
+	double front_prob = (double)front / flips;
+	double back_prob = (double)back / flips;
+
+	// 결과 출력
+	printf("앞면이 나온 횟수: %d\n", front);
+	printf("뒷면이 나온 횟수: %d\n", back);
+	printf("앞면 확률: %.4f\n", front_prob);
+	printf("뒷면 확률: %.4f\n", back_prob);
+
+	return 0;
+}
