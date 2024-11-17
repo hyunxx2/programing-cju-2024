@@ -1,0 +1,191 @@
+-	1
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+#define NUM_FLIP 10000
+#define COIN_FWD_BWD 3
+#define COIN_FWD_STATUS 1
+#define COIN_BWD_STATUS 2
+
+#define INITSTATUS 100
+#define END_COND 999
+
+// generating the seed number using the time clock information
+void GenRandSeed()
+{
+  // generating the random number using the time seed
+  srand((unsigned int)(time(NULL)));
+  return;
+}
+
+// generating the random number
+unsigned int GenRandFlipCoin(unsigned int nRange)
+{
+  unsigned int nRes = 0;
+  while (1)
+  {
+    nRes = ((unsigned int)(rand()) % (nRange));
+    if ((nRes == COIN_FWD_STATUS) || (nRes == COIN_BWD_STATUS))
+      break;
+  }
+  return nRes;
+}
+
+// main function loop
+int main(void)
+{
+  // generating the seed number using the time clock information
+  GenRandSeed();
+
+  // initializing variables
+  int nNumSumFwdFlip = 0;
+  int nNumSumBwdFlip = 0;
+  double dVarFwdFlip = 0.0;
+  double dVarBwdFlip = 0.0;
+  double dStdevFwdFlip = 0.0;
+  double dStdevBwdFlip = 0.0;
+
+  // finite loop
+  for (unsigned int i = 0; i < NUM_FLIP; i++)
+  {
+    // generating the random number, flip coin, 1: fwd, 2: bwd
+    unsigned int nStatusFlipCoin = GenRandFlipCoin(COIN_FWD_BWD);
+
+    // calculating summation
+    switch (nStatusFlipCoin)
+    {
+      case COIN_FWD_STATUS:
+      {
+        nNumSumFwdFlip++;
+        break;
+      }
+      case COIN_BWD_STATUS:
+      {
+        nNumSumBwdFlip++;
+        break;
+      }
+      default:
+      {
+        printf("please check your main loop or sub function...\n");
+        break;
+      }
+    }
+  }
+
+
+  // printing results
+  printf("Summation Result:(FWD,BWD):(%d,%d)\n", nNumSumFwdFlip, nNumSumBwdFlip);
+  printf("Probability:(FWD,BWD):(%.4lf,%.4lf)\n", (double)(nNumSumFwdFlip) / (NUM_FLIP), (double)(nNumSumBwdFlip) / (NUM_FLIP));
+  return 0;
+}
+
+
+
+-	2
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+int main() {
+    int lower, upper, sum = 0;
+    int numbers[10];
+    double variance = 0.0, std_deviation, mean;
+
+    // 랜덤 시드 설정
+    srand(time(NULL));
+
+    // 범위 입력 받기
+    printf("정수의 범위를 입력하세요 (하한 상한): ");
+    scanf_s("%d %d", &lower, &upper);
+
+    // 범위가 잘못된 경우
+    if (lower > upper) {
+        printf("하한이 상한보다 커서는 안 됩니다.\n");
+        return 1;
+    }
+
+    // 10개의 무작위 정수 생성
+    for (int i = 0; i < 10; i++) {
+        numbers[i] = rand() % (upper - lower + 1) + lower;
+        sum += numbers[i];  // 총합 계산
+    }
+
+    mean = sum / 10.0;  // 평균 계산
+
+    // 분산 계산
+    for (int i = 0; i < 10; i++) {
+        variance += (numbers[i] - mean) * (numbers[i] - mean);
+    }
+    variance /= 10.0;
+
+    // 표준편차 계산
+    std_deviation = sqrt(variance);
+
+    // 결과 출력
+    printf("생성된 정수: ");
+    for (int i = 0; i < 10; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n총합: %d\n분산: %.2f\n표준편차: %.2f\n", sum, variance, std_deviation);
+
+    return 0;
+}
+
+
+
+
+-	3
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void give_feedback(int guess, int answer, int attempt);  // 사용자 입력에 대한 피드백을 주는 함수
+
+int main() {
+    int answer, guess;
+    int attempts = 10;  // 최대 10번의 기회
+    srand(time(NULL));  // 랜덤 시드 설정 (현재 시간에 기반)
+    
+    // 컴퓨터가 1~100 사이의 무작위 정수 생성
+    answer = rand() % 100 + 1;
+
+    printf("컴퓨터가 1에서 100 사이의 정수를 선택했습니다.\n");
+    printf("그 숫자를 맞추세요! 기회는 %d번입니다.\n", attempts);
+
+    // 사용자에게 10번의 기회 동안 숫자를 맞추도록 요청
+    for (int i = 1; i <= attempts; i++) {
+        printf("\n%d번째 시도: 숫자를 입력하세요: ", i);
+        scanf("%d", &guess);
+
+        // 선택문을 이용한 피드백
+        if (guess < answer) {
+            give_feedback(guess, answer, i);  // 너무 작은 경우
+        } else if (guess > answer) {
+            give_feedback(guess, answer, i);  // 너무 큰 경우
+        } else {
+            printf("축하합니다! 정답 %d을 맞추셨습니다.\n", answer);
+            printf("게임을 종료합니다.\n");
+            break;  // 정답을 맞추면 게임 종료
+        }
+
+        // 10번의 기회가 끝나면 게임 종료
+        if (i == attempts) {
+            printf("\n기회를 모두 소진하셨습니다. 정답은 %d였습니다.\n", answer);
+            printf("게임 종료.\n");
+        }
+    }
+
+    return 0;
+}
+
+// 사용자 입력에 대한 피드백을 제공하는 함수
+void give_feedback(int guess, int answer, int attempt) {
+    if (guess < answer) {
+        printf("입력한 숫자 %d는 너무 낮습니다.\n", guess);
+    } else {
+        printf("입력한 숫자 %d는 너무 높습니다.\n", guess);
+    }
+}
