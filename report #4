@@ -1,0 +1,80 @@
+#include <stdio.h>
+
+// 벡터의 내적을 계산하는 함수
+double dot_product(double* vec1, double* vec2) {
+    return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
+}
+
+// 벡터의 외적을 계산하는 함수
+void cross_product(double* vec1, double* vec2, double* result) {
+    result[0] = vec1[1] * vec2[2] - vec1[2] * vec2[1];  // x
+    result[1] = vec1[2] * vec2[0] - vec1[0] * vec2[2];  // y
+    result[2] = vec1[0] * vec2[1] - vec1[1] * vec2[0];  // z
+}
+
+int main() {
+    double vec1[3], vec2[3];
+    double cross_result[3];
+
+    // 사용자로부터 벡터 입력 받기 (한 번의 scanf로 입력)
+    printf("두 벡터의 x, y, z 값을 공백으로 구분하여 입력하세요 (예: 1 2 3 4 5 6): ");
+    scanf_s("%lf %lf %lf %lf %lf %lf", &vec1[0], &vec1[1], &vec1[2], &vec2[0], &vec2[1], &vec2[2]);
+
+    // 내적 계산
+    double dot_result = dot_product(vec1, vec2);
+    printf("벡터의 내적: %.2f\n", dot_result);
+
+    // 외적 계산
+    cross_product(vec1, vec2, cross_result);
+    printf("벡터의 외적: (%.2f, %.2f, %.2f)\n", cross_result[0], cross_result[1], cross_result[2]);
+
+    return 0;
+}
+
+
+================================2==========================================
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+int main() {
+    srand(time(0));
+    int nums[100], selected[10], start, end;
+    double sum = 0, mean, variance = 0, stddev;
+
+    // 100개의 무작위 정수 생성
+    for (int i = 0; i < 100; i++) {
+        nums[i] = rand() % 1000;
+    }
+
+    // 범위 입력 받기
+    printf("범위 (시작 끝)를 입력하세요: ");
+    scanf_s("%d %d", &start, &end);
+
+    // 10개 정수 추출
+    for (int i = 0; i < 10; i++) {
+        selected[i] = nums[start + i];
+        sum += selected[i];
+    }
+
+    // 평균 계산
+    mean = sum / 10.0;
+
+    // 분산 계산
+    for (int i = 0; i < 10; i++) {
+        variance += (selected[i] - mean) * (selected[i] - mean);
+    }
+    variance /= 10;
+
+    // 표준편차 계산
+    stddev = sqrt(variance);
+
+    // 결과 출력
+    printf("총합: %.2f\n분산: %.2f\n표준편차: %.2f\n", sum, variance, stddev);
+
+    return 0;
+}
+
+
