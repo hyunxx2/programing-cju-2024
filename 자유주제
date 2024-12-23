@@ -1,0 +1,140 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define INITIAL_BALANCE 500000 // 초기 보유 금액
+
+// 카드 점수 반환 함수
+int GetCardValue(int card) {
+	if (card == 1) return 1; // A는 1점
+	if (card >= 11) return 10; // J, Q, K는 10점
+	return card; // 나머지는 카드 숫자 그대로 반환
+}
+
+// 카드 이름 반환 함수
+const char* GetCardName(int card) {
+	switch (card) {
+	case 1: return "A";
+	case 11: return "J";
+	case 12: return "Q";
+	case 13: return "K";
+	default: {
+		static char buffer[3];
+		sprintf_s(buffer, "%d", card); // 숫자 카드 반환
+		return buffer;
+	}
+	}
+}
+
+// 카드 점수 계산 함수
+int CalculateScore(int card1, int card2) {
+	return (GetCardValue(card1) + GetCardValue(card2)) % 10; // 합의 마지막 자릿수를 점수로 사용
+}
+
+// 카드 생성 함수
+int DrawCard() {
+	return rand() % 13 + 1; // 1부터 13까지의 카드 생성
+}
+
+// 결과 출력 및 보유 금액 계산
+void PrintResult(int playerScore, int bankerScore, int *balance, int bet, int choice) {
+	printf("\n플레이어 점수: %d\n", playerScore);
+	printf("뱅커 점수: %d\n", bankerScore);
+
+	if (playerScore > bankerScore) {
+		printf("결과: 플레이어 승리!\n");
+		if (choice == 1) *balance += bet * 2; // 플레이어에 베팅
+	}
+	else if (playerScore < bankerScore) {
+		printf("결과: 뱅커 승리!\n");
+		if (choice == 2) *balance += (int)(bet * 1.95); // 뱅커에 베팅
+	}
+	else {
+		printf("결과: 타이!\n");
+		if (choice == 3) *balance += bet * 8; // 타이에 베팅
+	}
+}
+
+// 게임 플레이 함수
+void PlayGame(int *balance) {
+	while (*balance > 0) {
+		printf("\n==== 바카라 게임 ====\n");
+		printf("현재 보유 금액: %d원\n", *balance);
+
+		int bet, choice;
+
+		// 베팅 금액 입력
+		printf("베팅 금액 입력 (0 입력 시 올인, 음수 입력 시 하프 배팅): ");
+		scanf_s("%d", &bet);
+
+		if (bet == 0) {
+			bet = *balance; // 올인
+			printf("올인! 베팅 금액: %d원\n", bet);
+		}
+		else if (bet < 0) {
+			bet = *balance / 2; // 하프 배팅
+			printf("하프 배팅! 베팅 금액: %d원\n", bet);
+		}
+
+		if (bet <= 0 || bet > *balance) {
+			printf("잘못된 베팅 금액입니다. 다시 시도하세요.\n");
+			continue;
+		}
+
+		// 첫 카드 공개
+		int playerCard1 = DrawCard();
+		int bankerCard1 = DrawCard();
+		printf("\n플레이어 첫 번째 카드: [%s]\n", GetCardName(playerCard1));
+		printf("뱅커 첫 번째 카드: [%s]\n", GetCardName(bankerCard1));
+
+		// 베팅 대상 선택
+		printf("\n베팅 대상 선택 (1: 플레이어, 2: 뱅커, 3: 타이): ");
+		scanf_s("%d", &choice);
+
+		if (choice < 1 || choice > 3) {
+			printf("잘못된 선택입니다. 다시 시도하세요.\n");
+			continue;
+		}
+
+		// 보유 금액 차감
+		*balance -= bet;
+
+		// 두 번째 카드 공개
+		int playerCard2 = DrawCard();
+		int bankerCard2 = DrawCard();
+		printf("\n플레이어 두 번째 카드: [%s]\n", GetCardName(playerCard2));
+		printf("뱅커 두 번째 카드: [%s]\n", GetCardName(bankerCard2));
+
+		// 점수 계산
+		int playerScore = CalculateScore(playerCard1, playerCard2);
+		int bankerScore = CalculateScore(bankerCard1, bankerCard2);
+
+		// 결과 출력 및 보유 금액 계산
+		PrintResult(playerScore, bankerScore, balance, bet, choice);
+
+		// 보유 금액 상태 확인
+		if (*balance <= 0) {
+			printf("\n보유 금액이 부족합니다. 다시 시작하시겠습니까? (1: 예, 0: 아니오): ");
+			int restart;
+			scanf_s("%d", &restart);
+			if (restart == 1) {
+				*balance = INITIAL_BALANCE;
+				printf("보유 금액이 %d원으로 초기화되었습니다.\n", INITIAL_BALANCE);
+			}
+			else {
+				printf("게임 종료. 안녕히 가세요!\n");
+				break;
+			}
+		}
+	}
+}
+
+int main() {
+	srand((unsigned)time(NULL)); // 랜덤 시드 설정
+	int balance = INITIAL_BALANCE; // 초기 보유 금액 설정
+
+	printf("==== 바카라 게임 시작 ====\n");
+	PlayGame(&balance);
+
+	return 0;
+}
